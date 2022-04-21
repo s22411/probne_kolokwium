@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Models;
+using Models.DTOs;
+using Service;
 
 namespace Controllers
 {
@@ -11,7 +10,24 @@ namespace Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
-        private readonly 
+        private readonly IAnimalClinicsMSSqlDbService _service;
+
+        public AnimalsController(IAnimalClinicsMSSqlDbService animalClinicsMSSqlDbService)
+        {
+            _service = animalClinicsMSSqlDbService;
+        }
+
+        [HttpGet]
+        public IEnumerable<AnimalsGET> GetAnimals(string orderBy)
+        {
+            return _service.GetAnimals(orderBy);
+        }
+
+        [HttpPost]
+        public bool AddAnimal(Animal animal)
+        {
+            return _service.AddAnimal(animal);
+        }
 
     }
 }
