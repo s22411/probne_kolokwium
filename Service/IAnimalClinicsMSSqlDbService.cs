@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Models;
+using Models.DTOs;
 
 namespace Service
 {
     public interface IAnimalClinicsMSSqlDbService
     {
-        public IEnumerable<Animal> GetAnimals(string orderBy);
+        public IEnumerable<AnimalsGET> GetAnimals(string orderBy);
+        public bool AddAnimal(Animal animal);
     }
 }
