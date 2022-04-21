@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Models;
 using Models.DTOs;
 using Service;
@@ -18,15 +22,26 @@ namespace Controllers
         }
 
         [HttpGet]
-        public IEnumerable<AnimalsGET> GetAnimals(string orderBy)
+        public async Task<IActionResult> GetAnimals(string orderBy)
         {
-            return _service.GetAnimals(orderBy);
+            IEnumerable<AnimalsGET> result;
+            try 
+            {
+                result = await _service.GetAnimalsAsync(orderBy);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]
-        public bool AddAnimal(Animal animal)
+        public async Task<IActionResult> AddAnimal(Animal animal)
         {
-            return _service.AddAnimal(animal);
+            throw new NotImplementedException();
+            return Ok(await _service.AddAnimalAsync(animal));
         }
 
     }
