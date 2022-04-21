@@ -29,7 +29,8 @@ namespace Service
                 using(var con = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     con.Open();
-                    var cmd = new SqlCommand("SELECT Name, Type, AdmissionDate, LastName FROM Animals a JOIN Owner o ON a.IdOwner = O.IdOwner ORDER BY ", con);
+                    var cmd = new SqlCommand($"SELECT Name, Type, AdmissionDate, LastName FROM Animals a JOIN Owner o ON a.IdOwner = O.IdOwner ORDER BY {sortBy}", con);
+                    // cmd.Parameters.AddWithValue("@sortBy", sortBy);
 
                     var result = new List<AnimalsGET>();
                     var reader = await cmd.ExecuteReaderAsync();

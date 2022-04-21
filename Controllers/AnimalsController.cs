@@ -15,6 +15,7 @@ namespace Controllers
     public class AnimalsController : ControllerBase
     {
         private readonly IAnimalClinicsMSSqlDbService _service;
+        private readonly IEnumerable<string> possibleSorting = new List<string> { "Name", "Type", "AdmissionDate", "LastName" };
 
         public AnimalsController(IAnimalClinicsMSSqlDbService animalClinicsMSSqlDbService)
         {
@@ -24,6 +25,11 @@ namespace Controllers
         [HttpGet]
         public async Task<IActionResult> GetAnimals(string sortBy)
         {
+            if (sortBy is not null && !possibleSorting.Contains(sortBy.ToLower()))
+            {
+                return BadRequest("Invalid sorting parameter: " + sortBy);
+            }
+
             IEnumerable<AnimalsGET> result;
             try 
             {
