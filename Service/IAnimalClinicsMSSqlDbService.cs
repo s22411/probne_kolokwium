@@ -7,7 +7,7 @@ namespace Service
 {
     public interface IAnimalClinicsMSSqlDbService
     {
-        Task<IEnumerable<AnimalsGET>> GetAnimalsAsync(string orderBy);
+        Task<IEnumerable<AnimalsGET>> GetAnimalsAsync(string sortBy);
         Task<bool> AddAnimalAsync(Animal animal);
     }
 }

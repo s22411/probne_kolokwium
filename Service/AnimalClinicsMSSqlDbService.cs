@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Models;
@@ -20,9 +22,36 @@ namespace Service
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<AnimalsGET>> GetAnimalsAsync(string orderBy)
+        public async Task<IEnumerable<AnimalsGET>> GetAnimalsAsync(string sortBy)
         {
-            
+            try
+            {
+                using(var con = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    con.Open();
+                    var cmd = new SqlCommand("SELECT Name, Type, AdmissionDate, LastName FROM Animals a JOIN Owner o ON a.IdOwner = O.IdOwner ORDER BY ", con);
+
+                    var result = new List<AnimalsGET>();
+                    var reader = await cmd.ExecuteReaderAsync();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new AnimalsGET
+                        {
+                            Name = reader["Name"].ToString(),
+                            AnimalType = reader["Type"].ToString(),
+                            DateOfAdmission = DateTime.Parse(reader["AdmissionDate"].ToString()),
+                            LastNameOfOwner = reader["LastName"].ToString()
+                        });
+                    }
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public string GetConnectionString()

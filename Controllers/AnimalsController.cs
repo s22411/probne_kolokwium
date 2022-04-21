@@ -22,12 +22,12 @@ namespace Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAnimals(string orderBy)
+        public async Task<IActionResult> GetAnimals(string sortBy)
         {
             IEnumerable<AnimalsGET> result;
             try 
             {
-                result = await _service.GetAnimalsAsync(orderBy);
+                result = await _service.GetAnimalsAsync(sortBy);
             }
             catch (Exception ex)
             {
