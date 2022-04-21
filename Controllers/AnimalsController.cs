@@ -11,7 +11,7 @@ namespace Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
-        
+        IControllerService _controllerService;
 
     }
 }
