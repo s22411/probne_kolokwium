@@ -14,7 +14,7 @@ namespace Controllers
     public class AnimalsController : ControllerBase
     {
         private readonly IAnimalClinicsMSSqlDbService _service;
-        private readonly IEnumerable<string> possibleSorting = new List<string> { "Name", "Type", "AdmissionDate", "LastName" };
+        private readonly IEnumerable<string> possibleSorting = new List<string> { "name", "type", "admissiondate", "lastname" };
 
         public AnimalsController(IAnimalClinicsMSSqlDbService animalClinicsMSSqlDbService)
         {
@@ -22,7 +22,7 @@ namespace Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAnimals(string sortBy)
+        public async Task<IActionResult> GetAnimalsAsync(string sortBy)
         {
             if (sortBy is not null && !possibleSorting.Contains(sortBy.ToLower()))
             {
@@ -43,7 +43,7 @@ namespace Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAnimal(Animal animal)
+        public async Task<IActionResult> AddAnimalAsync(Animal animal)
         {
             throw new NotImplementedException();
             return Ok(await _service.AddAnimalAsync(animal));

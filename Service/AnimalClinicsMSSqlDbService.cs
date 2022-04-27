@@ -10,6 +10,7 @@ namespace Service
 {
     public class AnimalClinicsMSSqlDbService : IAnimalClinicsMSSqlDbService
     {
+        private readonly string _connectionStringName = "ConnectionString";
         private readonly IConfiguration _configuration;
 
         public AnimalClinicsMSSqlDbService(IConfiguration configuration)
@@ -19,18 +20,21 @@ namespace Service
 
         public Task<bool> AddAnimalAsync(Animal animal)
         {
+            
             throw new System.NotImplementedException();
         }
 
         public async Task<IEnumerable<AnimalsGET>> GetAnimalsAsync(string sortBy)
         {
+            if (sortBy is null || sortBy == "") sortBy = "Name";
+
             try
             {
-                using(var con = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                using(var con = new SqlConnection(GetConnectionString()))
                 {
                     con.Open();
-                    var cmd = new SqlCommand($"SELECT Name, Type, AdmissionDate, LastName FROM Animals a JOIN Owner o ON a.IdOwner = O.IdOwner ORDER BY {sortBy}", con);
-                    // cmd.Parameters.AddWithValue("@sortBy", sortBy);
+
+                    var cmd = new SqlCommand($"SELECT Name, Type, AdmissionDate, LastName FROM Animal a JOIN Owner o ON a.IdOwner = O.IdOwner ORDER BY {sortBy}", con);
 
                     var result = new List<AnimalsGET>();
                     var reader = await cmd.ExecuteReaderAsync();
@@ -57,7 +61,7 @@ namespace Service
 
         public string GetConnectionString()
         {
-            return _configuration.GetConnectionString("DefaultConnection");
+            return _configuration.GetConnectionString(_connectionStringName);
         }
 
     }
